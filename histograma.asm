@@ -444,10 +444,8 @@ imagem: .word 255 255 255 255 255 255 255 255 255 255 255 255
 
 main:
 	li $t0, 0 # CONTADOR PARA O VETOR H.
-    li $t7, 2
     lw $t1, vmaximo # CARREGA O VALOR DO VMAXIMO PARA MEMORIA.
     la $s1, H # Carrega o vetor H no registrador s1
-    
     inicioForH: # Inicio do vetor para preencher H com zeros. for(int i=0; i<256; i++)
         ble $t0, $t1, forH # Branch se $t0 menor ou igual a $t1 vá para instrução forH
         j fimForH # Jump para fim do for caso $t1 = 256
