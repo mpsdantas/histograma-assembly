@@ -463,7 +463,7 @@ main:
 
     # lw $t3, 0($s1)
     # addi $t3, $t3, 4
-
+    # Remover esses dois for e criar instrução com um for.
     inicioForM:
         blt $t3, $t2, forM
         j fimForM
