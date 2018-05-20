@@ -444,7 +444,7 @@ imagem: .word 255 255 255 255 255 255 255 255 255 255 255 255
 
 main:
 	li $t0, 0 # CONTADOR PARA O VETOR H.
-    lw $t1, vmaximo # CARREGA O VALOR DO VMAXIMO PARA MEMORIA.
+    lw $t1, vmaximo # CARREGA O VALOR DO VMAXIMO PARA MEMORIA. 255
     la $s1, H # Carrega o vetor H no registrador s1
     inicioForH: # Inicio do vetor para preencher H com zeros. for(int i=0; i<256; i++)
         ble $t0, $t1, forH # Branch se $t0 menor ou igual a $t1 vá para instrução forH
@@ -455,29 +455,38 @@ main:
             addi $t0, $t0, 1 # Incrementa mais um no for
             j inicioForH # Jump para inicio do for.
     fimForH:
-    la $s1, H # Carregando H zerado no reg s1
+    
     lw $t1, colunas # Carregando o tamanho das colunas do vetor.
     lw $t2, linhas  # Carregando o tamanho das linhas do vetor.
-    li $t3, 0 # Indice for M
-    li $t4, 0 # Indice Vetor N
+    
+    mul $t3, $t1, $t2 # fazendo multiplicação das linhas pelas colunas para o segundo for
 
-    # lw $t3, 0($s1)
-    # addi $t3, $t3, 4
-    # Remover esses dois for e criar instrução com um for.
-    inicioForM:
-        blt $t3, $t2, forM
-        j fimForM
-        forM:
-            inicioForN:
-                blt $t4, $t1, forN
-                j fimForN
-                forN:
-                    addi $t4, $t4, 1 # Incrementa mais um no for
-                    j inicioForN
-            fimForN:
-            addi $t3, $t3, 1 # Incrementa mais um no for
-            j inicioForM
-    fimForM:
+    la $s1, H # Carregando H zerado no reg s1
+    la $s2, imagem # Carrega a imagem no registrador s2
+    li $t0, 0 # CONTADOR PARA O VETOR H.
+    li $t5, 0 # CONTADOR PARA O DESLOCADOR H.
+    inicioForHistograma: # Inicio do for para execução do histograma
+        blt $t0, $t3, forHistograma # Branch se $t0 menor ou igual a $t1 vá para instrução forH
+        j fimForHistograma # Jump para fim do for caso $t1 = 256
+        forHistograma:
+            lw $t4, 0($s2) # Carregando valor da imagem no registrador t4
+            inicioForAndarH:
+                ble $t5, $t4, forAndarH # Branch se $t0 menor ou igual a $t1 vá para instrução forH
+                j fimForAndarH # Jump para fim do for caso $t1 = 256
+                forAndarH:
+                    addi $s2, $s2, 4 # Move 4 bytes na posição do vetor para acessar a nova posição
+                    addi $t5, $t5, 1 # Incrementa mais um no for
+            fimForAndarH:
+            lw $t6, 0($s1)
+            addi $t7, $t6, 1
+            sw $t7, 0($s2)
+            addi $t0, $t0, 1 # Incrementa mais um no for
+            la $s2, imagem # Carrega a imagem no registrador s2
+            la $s1, H # Carregando H zerado no reg s1
+            la $t7, 0
+            j inicioForHistograma # Jump para inicio do for.
+    fimForHistograma:
+    
 
 
         
