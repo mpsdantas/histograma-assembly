@@ -465,23 +465,24 @@ main:
     la $s2, imagem # Carrega a imagem no registrador s2
     li $t0, 0 # CONTADOR PARA O VETOR H.
     li $t5, 0 # CONTADOR PARA O DESLOCADOR H.
+
     inicioForHistograma: # Inicio do for para execução do histograma
-        blt $t0, $t3, forHistograma # Branch se $t0 menor ou igual a $t1 vá para instrução forH
+        blt $t0, $t3, forHistograma # Branch se $t0 menor a $t3 vá para instrução forHistograma
         j fimForHistograma # Jump para fim do for caso $t1 = 256
         forHistograma:
-            lw $t4, 0($s2) # Carregando valor da imagem no registrador t4
+        lw $t4, 0($s2) # Carregando valor da imagem no registrador t4
             inicioForAndarH:
-                ble $t5, $t4, forAndarH # Branch se $t0 menor ou igual a $t1 vá para instrução forH
-                j fimForAndarH # Jump para fim do for caso $t1 = 256
+                ble $t5, $t4, forAndarH # Branch se $t0 menor ou igual a $t1 vá para instrução forAndarH
+                j fimForAndarH
                 forAndarH:
-                    addi $s2, $s2, 4 # Move 4 bytes na posição do vetor para acessar a nova posição
+                    addi $s1, $s1, 4 # Move 4 bytes na posição do vetor para acessar a nova posição
                     addi $t5, $t5, 1 # Incrementa mais um no for
             fimForAndarH:
             lw $t6, 0($s1)
             addi $t7, $t6, 1
-            sw $t7, 0($s2)
+            sw $t7, 0($s1)
             addi $t0, $t0, 1 # Incrementa mais um no for
-            la $s2, imagem # Carrega a imagem no registrador s2
+            addi $s2, $s2, 4 # Move 4 bytes na posição do vetor para acessar a nova posição
             la $s1, H # Carregando H zerado no reg s1
             la $t7, 0
             j inicioForHistograma # Jump para inicio do for.
