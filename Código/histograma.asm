@@ -475,6 +475,10 @@ main:
                 ble $t5, $t4, forAndarH # Branch se $t0 menor ou igual a $t1 vá para instrução forAndarH
                 j fimForAndarH
                 forAndarH:
+                    lw $s4, 0($s1)
+                    li $v0, 4
+                    add $a0, $zero, $s4
+                    syscall
                     addi $s1, $s1, 4 # Move 4 bytes na posição do vetor para acessar a nova posição
                     addi $t5, $t5, 1 # Incrementa mais um no for
             fimForAndarH:
